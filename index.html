@@ -242,6 +242,15 @@ section[id]{scroll-margin-top:70px}
 .f-row{display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px;margin-top:48px;padding-top:24px;border-top:1px solid var(--line-d);font-size:13px;color:rgba(251,247,244,.6)}
 .f-row nav{display:flex;flex-wrap:wrap;gap:24px;font:600 11px/1 var(--sans);letter-spacing:.24em;text-transform:uppercase;color:var(--ivory)}
 .rm *,.rm *::before,.rm *::after{animation:none!important;transition:none!important}
+
+/* Music toggle */
+.music{display:inline-flex;align-items:center;gap:12px;height:44px;padding:0 18px 0 14px;border:1px solid var(--line-d);border-radius:999px;background:rgba(18,13,16,.35);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:var(--ivory);font:600 10.5px/1 var(--sans);letter-spacing:.22em;text-transform:uppercase;transition:border-color .3s,background-color .3s}
+.music:hover{border-color:var(--gold-lt);background:rgba(18,13,16,.55)}
+.music .bars{display:flex;align-items:flex-end;gap:2px;height:14px}
+.music .bars i{width:2px;height:30%;background:var(--gold-lt);border-radius:1px}
+.music.on .bars i{animation:eq .9s ease-in-out infinite}
+.music.on .bars i:nth-child(2){animation-delay:-.3s}.music.on .bars i:nth-child(3){animation-delay:-.6s}.music.on .bars i:nth-child(4){animation-delay:-.15s}
+@keyframes eq{0%,100%{height:25%}50%{height:100%}}
 </style>
 </head>
 <body>
@@ -279,6 +288,7 @@ section[id]{scroll-margin-top:70px}
     </ul>
     <div class="cover-r">
       <p class="look-no"><b id="lookNo">01</b>Look · <span id="lookName">Classic rose</span></p>
+      <button class="music" type="button" id="musicBtn" aria-pressed="false"><span class="bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span id="musicLabel">Play shehnai</span></button>
       <div class="dots" id="dots"></div>
       <a class="btn fill" href="#book">Book a trial <svg><use href="#ar"/></svg></a>
     </div>
@@ -585,6 +595,87 @@ section[id]{scroll-margin-top:70px}
   const fm = $('#fMast');
   const fit = () => { fm.style.fontSize = '100px'; fm.style.width = 'max-content'; const w = fm.offsetWidth; fm.style.width = ''; fm.style.fontSize = Math.floor(100 * fm.clientWidth / w * .97) + 'px'; };
   fit(); addEventListener('resize', fit); if (document.fonts) document.fonts.ready.then(() => { fit(); lsize(); });
+
+
+  /* ---------- Original wedding tune, synthesised live (no recordings, so no copyright) ----------
+     A shehnai-style melody in Raag Bhupali over a tanpura drone, soft tabla and ghungroo bells. */
+  const musicBtn = $('#musicBtn'), musicLabel = $('#musicLabel');
+  let ac = null, master = null, playing = false, heroVisible = true, schedTimer = null, nextT = 0, beat = 0, lead = null, leadGain = null;
+  const SA = 277.18, BEAT = 60 / 72;
+  const hz = st => SA * Math.pow(2, st / 12);
+  const PHRASE = [[7,2],[9,1],[12,3],[9,1],[7,1],[4,2],[2,1],[4,1],[7,4],[4,1],[2,1],[0,2],[2,1],[4,1],[2,2],[0,4],[null,4]];
+  const steps = []; let acc = 0;
+  PHRASE.forEach(([n, d]) => { steps.push([acc, n, d]); acc += d; });
+  const CYCLE = acc;
+  const BOLS = ['dha','dhin','dhin','dha','dha','dhin','dhin','dha','dha','tin','tin','ta','ta','dhin','dhin','dha'];
+  const initAudio = () => {
+    ac = new (window.AudioContext || window.webkitAudioContext)();
+    const comp = ac.createDynamicsCompressor(); comp.connect(ac.destination);
+    master = ac.createGain(); master.gain.value = 0; master.connect(comp);
+    lead = ac.createOscillator(); lead.type = 'sawtooth'; lead.frequency.value = hz(7);
+    const vib = ac.createOscillator(), vibAmt = ac.createGain(); vib.frequency.value = 5.6; vibAmt.gain.value = 9;
+    vib.connect(vibAmt); vibAmt.connect(lead.detune);
+    const bp = ac.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = 1500; bp.Q.value = 1.1;
+    const lp = ac.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 3200;
+    leadGain = ac.createGain(); leadGain.gain.value = 0;
+    lead.connect(bp); bp.connect(lp); lp.connect(leadGain); leadGain.connect(master);
+    lead.start(); vib.start();
+  };
+  const pluck = (f, t, vol = .05, len = 3.2) => {
+    const g = ac.createGain(), lp = ac.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 1400;
+    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol, t + .02); g.gain.exponentialRampToValueAtTime(.0001, t + len);
+    [0, 6].forEach(dt => { const o = ac.createOscillator(); o.type = 'sawtooth'; o.frequency.value = f; o.detune.value = dt; o.connect(lp); o.start(t); o.stop(t + len); });
+    lp.connect(g); g.connect(master);
+  };
+  const bell = t => {
+    const g = ac.createGain(); g.gain.setValueAtTime(.022, t); g.gain.exponentialRampToValueAtTime(.0001, t + .5); g.connect(master);
+    [2637, 3520, 4186].forEach(f => { const o = ac.createOscillator(); o.type = 'sine'; o.frequency.value = f; o.connect(g); o.start(t); o.stop(t + .5); });
+  };
+  let noiseBuf = null;
+  const noise = () => { if (noiseBuf) return noiseBuf; noiseBuf = ac.createBuffer(1, ac.sampleRate * .2, ac.sampleRate); const d = noiseBuf.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1; return noiseBuf; };
+  const tabla = (bol, t) => {
+    const deep = bol === 'dha' || bol === 'dhin';
+    if (deep) {
+      const o = ac.createOscillator(), g = ac.createGain();
+      o.frequency.setValueAtTime(bol === 'dha' ? 110 : 95, t); o.frequency.exponentialRampToValueAtTime(58, t + .25);
+      g.gain.setValueAtTime(.16, t); g.gain.exponentialRampToValueAtTime(.0001, t + .35);
+      o.connect(g); g.connect(master); o.start(t); o.stop(t + .4);
+    }
+    const n = ac.createBufferSource(), f = ac.createBiquadFilter(), g = ac.createGain();
+    n.buffer = noise(); f.type = 'bandpass'; f.frequency.value = deep ? 1800 : 3200; f.Q.value = 4;
+    g.gain.setValueAtTime(deep ? .035 : .05, t); g.gain.exponentialRampToValueAtTime(.0001, t + (deep ? .12 : .07));
+    n.connect(f); f.connect(g); g.connect(master); n.start(t); n.stop(t + .15);
+  };
+  const schedule = () => {
+    while (nextT < ac.currentTime + .25) {
+      const t = nextT, inCycle = beat % CYCLE;
+      if (beat % 4 === 0) { pluck(SA * .75 / 2, t); pluck(SA, t + BEAT, .04); pluck(SA, t + BEAT * 2, .04); pluck(SA / 2, t + BEAT * 3, .05); }
+      tabla(BOLS[beat % 16], t);
+      if (beat % 8 === 0 || beat % 8 === 5) bell(t);
+      const st = steps.find(x => x[0] === inCycle);
+      if (st) {
+        const [, n, d] = st, g = leadGain.gain;
+        if (n === null) g.setTargetAtTime(0, t, .15);
+        else { lead.frequency.setTargetAtTime(hz(n), t, .06); g.setTargetAtTime(0, t - .03, .02); g.setTargetAtTime(.075, t + .02, .05); g.setTargetAtTime(.055, t + d * BEAT * .6, .2); }
+      }
+      nextT += BEAT; beat++;
+    }
+  };
+  const level = () => {
+    if (!ac) return;
+    const on = playing && heroVisible && !document.hidden, t = ac.currentTime;
+    master.gain.cancelScheduledValues(t); master.gain.setTargetAtTime(on ? .55 : 0, t, on ? .5 : .35);
+  };
+  musicBtn.addEventListener('click', () => {
+    if (!ac) initAudio();
+    playing = !playing;
+    if (playing) { ac.resume(); if (!schedTimer) { nextT = ac.currentTime + .1; schedTimer = setInterval(schedule, 80); } }
+    musicBtn.classList.toggle('on', playing); musicBtn.setAttribute('aria-pressed', playing);
+    musicLabel.textContent = playing ? 'Pause music' : 'Play shehnai';
+    level();
+  });
+  new IntersectionObserver(([e]) => { heroVisible = e.isIntersecting; level(); }, { threshold: .25 }).observe(cover);
+  document.addEventListener('visibilitychange', level);
 
   watch();
   if (io) io.observe($('#letterFig'));
