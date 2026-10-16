@@ -1,0 +1,636 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Beauty Studio · Salon &amp; Spa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=DM+Sans:opsz,wght@9..40,400..600&display=swap">
+<style>
+/* Layout: a soft-pop beauty box. Rounded bento panels floating on rose milk, chunky friendly type, stickers, and photos held in living blob shapes. */
+:root{
+  --milk:#F8ECEA; --panel:#FFF8F6; --plum:#3A1430; --plum-2:#6B4A60;
+  --coral:#FF5E5B; --butter:#FFE59A; --mint:#CDE8DA; --lilac:#E3D7FF; --blush:#F7C9C3;
+  --line:rgba(58,20,48,.12);
+  --display:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif;
+  --body:"DM Sans","Helvetica Neue",Arial,sans-serif;
+  --spring:cubic-bezier(.34,1.56,.64,1);
+  --ease:cubic-bezier(.2,.8,.2,1);
+  --r:32px;
+  color-scheme:light;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--milk);color:var(--plum);font:400 16.5px/1.6 var(--body);-webkit-font-smoothing:antialiased;overflow-x:clip}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button,input,select{font:inherit;color:inherit}
+button{background:none;border:0;padding:0;cursor:pointer}
+h1,h2,h3,h4,p,ul,ol,dl,dd,figure{margin:0}
+ul,ol{padding:0;list-style:none}
+[hidden]{display:none!important}
+::selection{background:var(--coral);color:#fff}
+:focus-visible{outline:2.5px solid var(--coral);outline-offset:3px;border-radius:12px}
+.wrap{width:100%;max-width:1400px;margin-inline:auto;padding-inline:clamp(12px,2.4vw,32px)}
+.panel{border-radius:var(--r);padding:clamp(28px,5vw,72px)}
+.gap{display:grid;gap:clamp(12px,1.4vw,18px)}
+section[id]{scroll-margin-top:96px}
+.h2{font:700 clamp(40px,5.6vw,84px)/.98 var(--display);letter-spacing:-.04em;text-wrap:balance}
+.h2 .hl{position:relative;display:inline-block;color:var(--coral)}
+.h2 .hl::after{content:"";position:absolute;left:-2%;right:-2%;bottom:.06em;height:.18em;z-index:-1;border-radius:99px;background:var(--butter);transform:scaleX(0);transform-origin:left;transition:transform .9s var(--ease) .3s}
+.in .h2 .hl::after,.h2.in .hl::after{transform:scaleX(1)}
+.sub{max-width:46ch;font-size:clamp(16.5px,1.3vw,18.5px);color:var(--plum-2)}
+.tagline{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:99px;background:var(--panel);font:600 13px/1 var(--body)}
+.tagline b{display:grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--coral);color:#fff;font-size:11px}
+
+/* Chunky buttons */
+.btn{display:inline-flex;align-items:center;gap:10px;height:56px;padding-inline:28px;border-radius:99px;background:var(--plum);color:var(--panel);font:700 16px/1 var(--display);letter-spacing:-.01em;box-shadow:0 5px 0 0 #1f0a1a;transition:transform .25s var(--spring),box-shadow .25s,background-color .3s}
+.btn:hover{transform:translateY(-3px);box-shadow:0 8px 0 0 #1f0a1a;background:var(--coral)}
+.btn:active{transform:translateY(4px);box-shadow:0 1px 0 0 #1f0a1a}
+.btn.light{background:var(--panel);color:var(--plum);box-shadow:0 5px 0 0 var(--blush)}
+.btn.light:hover{background:var(--butter);box-shadow:0 8px 0 0 var(--blush)}
+.btn svg{width:18px;height:18px}
+
+/* Sticker badges */
+.sticker{position:absolute;display:grid;place-items:center;text-align:center;font:800 15px/1.05 var(--display);letter-spacing:-.02em;transition:transform .5s var(--spring)}
+.sticker:hover{transform:rotate(0deg) scale(1.12)!important}
+
+/* Nav */
+.nav{position:fixed;left:0;right:0;top:12px;z-index:50;pointer-events:none}
+.nav-in{display:flex;justify-content:space-between;align-items:center;gap:16px;height:64px;padding:0 10px 0 22px;border-radius:99px;background:color-mix(in srgb,var(--panel) 82%,transparent);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);box-shadow:0 10px 30px -18px rgba(58,20,48,.35);pointer-events:auto;transition:transform .5s var(--spring)}
+.nav.hide .nav-in{transform:translateY(-120%)}
+.logo{display:flex;align-items:center;gap:8px;font:800 22px/1 var(--display);letter-spacing:-.04em}
+.logo svg{width:22px;height:22px;color:var(--coral);transition:transform .6s var(--spring)}
+.logo:hover svg{transform:rotate(90deg) scale(1.2)}
+.links{display:flex;gap:4px}
+.links a{padding:10px 16px;border-radius:99px;font:600 15px/1 var(--body);transition:background-color .3s}
+.links a:hover{background:var(--blush)}
+.nav .btn{height:46px;padding-inline:20px;font-size:15px;box-shadow:none}
+.nav .btn:hover{box-shadow:none}
+@media (max-width:900px){.links{display:none}}
+
+/* Hero */
+.hero{padding-top:92px}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:clamp(12px,1.4vw,18px)}
+.hero-copy{position:relative;display:grid;align-content:end;gap:26px;min-height:min(78vh,720px);background:var(--panel);overflow:hidden}
+.hero h1{font:800 clamp(56px,8.4vw,140px)/.9 var(--display);letter-spacing:-.055em}
+.hero h1 .line{display:block;overflow:hidden;padding-bottom:.05em}
+.hero h1 .line>span{display:inline-block;animation:pop .9s var(--spring) both;animation-delay:calc(var(--i)*.12s + .2s)}
+.hero h1 em{font-style:normal;color:var(--coral)}
+@keyframes pop{from{transform:translateY(100%) rotate(6deg);opacity:0}}
+@keyframes popIn{from{transform:scale(.6);opacity:0}}
+.hero-copy .cta{display:flex;flex-wrap:wrap;gap:14px;animation:popIn .7s var(--spring) both .7s}
+.hero-copy .sub{animation:popIn .7s var(--spring) both .6s}
+.hero-copy .tagline{position:absolute;top:clamp(24px,3vw,40px);left:clamp(28px,5vw,72px);animation:popIn .7s var(--spring) both .9s}
+.hero-art{position:relative;min-height:min(78vh,720px);border-radius:var(--r);background:var(--blush);overflow:hidden}
+.blob-img{position:absolute;object-fit:cover}
+.b1{inset:6% 8% 14% 16%;width:76%;height:80%;clip-path:url(#blob1)}
+.b2{width:34%;aspect-ratio:1;left:3%;bottom:5%;clip-path:url(#blob2);height:auto}
+.b3{width:28%;aspect-ratio:1;right:4%;top:5%;clip-path:url(#blob3);height:auto}
+.hero-art .sticker.s1{right:7%;bottom:9%;width:128px;height:128px;border-radius:50%;background:var(--butter);rotate:-12deg;animation:spinSlow 18s linear infinite}
+.hero-art .sticker.s1 svg{position:absolute;inset:0;width:100%;height:100%}
+.hero-art .sticker.s2{left:40%;top:7%;padding:10px 16px;border-radius:99px;background:var(--mint);rotate:8deg;font-size:14px;animation:float 5s ease-in-out infinite}
+@keyframes spinSlow{to{rotate:348deg}}
+@keyframes float{50%{translate:0 -10px}}
+@media (max-width:900px){.hero-grid{grid-template-columns:minmax(0,1fr)}.hero-copy{min-height:0;padding-top:96px}.hero-art{min-height:480px}}
+
+/* Wave text */
+.wave{height:clamp(90px,10vw,150px);margin-block:clamp(10px,2vw,24px)}
+.wave svg{width:100%;height:100%;overflow:visible}
+.wave text{font:800 clamp(30px,3.6vw,54px) var(--display);letter-spacing:-.02em;fill:var(--plum)}
+.wave text tspan.c{fill:var(--coral)}
+
+/* Services accordion */
+.acc{display:flex;gap:clamp(8px,1vw,14px);height:min(70vh,620px)}
+.acc-item{position:relative;flex:1;min-width:0;border-radius:var(--r);overflow:hidden;cursor:pointer;transition:flex-grow .8s var(--ease)}
+.acc-item.open{flex-grow:4.2}
+.acc-item img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 1.2s var(--ease)}
+.acc-item.open img{transform:scale(1.04)}
+.acc-item::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 35%,rgba(58,20,48,.82))}
+.acc-label{position:absolute;left:0;bottom:0;z-index:1;display:grid;gap:12px;width:100%;padding:clamp(18px,2.4vw,32px);color:var(--panel)}
+.acc-label h3{font:800 clamp(24px,2.6vw,40px)/1 var(--display);letter-spacing:-.03em;white-space:nowrap}
+.acc-item:not(.open) .acc-label h3{writing-mode:vertical-rl;rotate:180deg;font-size:clamp(20px,2vw,28px)}
+.acc-more{display:grid;gap:12px;max-width:42ch;opacity:0;transform:translateY(14px);transition:opacity .4s,transform .6s var(--spring)}
+.acc-item.open .acc-more{opacity:1;transform:none;transition-delay:.35s}
+.acc-more ul{display:flex;flex-wrap:wrap;gap:6px}
+.acc-more li{padding:6px 12px;border-radius:99px;background:rgba(255,248,246,.18);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);font-size:13.5px}
+.acc-no{position:absolute;top:18px;left:18px;z-index:1;display:grid;place-items:center;width:42px;height:42px;border-radius:50%;background:var(--panel);font:800 14px/1 var(--display)}
+@media (max-width:760px){.acc{flex-direction:column;height:auto}.acc-item{min-height:96px;flex:none}.acc-item.open{min-height:420px}.acc-item:not(.open) .acc-label h3{writing-mode:horizontal-tb;rotate:0deg}}
+
+/* Concern finder: flip cards */
+.finder{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,4vw,64px);align-items:center;background:var(--lilac)}
+.concerns{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+.concerns button{padding:14px 20px;border-radius:99px;background:var(--panel);font:700 16px/1 var(--display);letter-spacing:-.01em;box-shadow:0 4px 0 rgba(58,20,48,.18);transition:transform .3s var(--spring),background-color .3s,color .3s}
+.concerns button:hover{transform:translateY(-3px) rotate(-2deg)}
+.concerns button[aria-pressed="true"]{background:var(--plum);color:var(--panel)}
+.flip{perspective:1400px;max-width:460px;width:100%;justify-self:center}
+.flip-in{position:relative;aspect-ratio:4/5;transform-style:preserve-3d;transition:transform .9s var(--spring)}
+.flip.turn .flip-in{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;border-radius:var(--r);overflow:hidden;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.face.front{display:grid;place-items:center;align-content:center;gap:14px;padding:32px;background:var(--panel);text-align:center;border:2px dashed rgba(58,20,48,.25)}
+.face.front b{font:800 28px/1.1 var(--display);letter-spacing:-.03em}
+.face.front span{font-size:52px;line-height:1;animation:float 3s ease-in-out infinite}
+.face.back{transform:rotateY(180deg);background:var(--plum);color:var(--panel)}
+.face.back img{width:100%;height:58%;object-fit:cover}
+.rec{display:grid;gap:10px;padding:22px 24px}
+.rec h3{font:800 28px/1.05 var(--display);letter-spacing:-.03em}
+.rec p{font-size:14.5px;opacity:.8}
+.rec .row{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.rec .row b{font:800 22px/1 var(--display)}
+.add{display:inline-flex;align-items:center;gap:8px;height:42px;padding-inline:16px;border-radius:99px;background:var(--coral);color:#fff;font:700 14px/1 var(--display);transition:transform .3s var(--spring)}
+.add:hover{transform:scale(1.06) rotate(-2deg)}
+.add.added{background:var(--mint);color:var(--plum)}
+@media (max-width:860px){.finder{grid-template-columns:minmax(0,1fr)}}
+
+/* Price menu */
+.menu-grid{display:grid;grid-template-columns:minmax(0,.7fr) minmax(0,1.3fr);gap:clamp(12px,1.4vw,18px)}
+.cats{display:grid;gap:10px;align-content:start}
+.cat{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:20px 22px;border-radius:24px;background:var(--panel);font:800 clamp(22px,2vw,30px)/1 var(--display);letter-spacing:-.03em;text-align:left;transition:background-color .3s,transform .4s var(--spring),color .3s}
+.cat small{font:600 13px/1 var(--body);letter-spacing:0;opacity:.6}
+.cat:hover{transform:translateX(6px)}
+.cat[aria-selected="true"]{background:var(--plum);color:var(--panel)}
+.cat[aria-selected="true"]:nth-child(1){background:var(--coral)}
+.list{background:var(--panel);display:grid;align-content:start;gap:4px}
+.item{display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;gap:16px;padding:18px 4px;border-bottom:1.5px dashed var(--line);animation:popIn .5s var(--spring) both;animation-delay:calc(var(--n)*60ms)}
+.item h4{font:700 20px/1.2 var(--display);letter-spacing:-.02em}
+.item p{font-size:14px;color:var(--plum-2)}
+.item .p{font:800 20px/1 var(--display);white-space:nowrap}
+.plus{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:var(--butter);font:700 22px/1 var(--display);transition:transform .35s var(--spring),background-color .3s}
+.plus:hover{transform:rotate(90deg) scale(1.1)}
+.plus.on{background:var(--plum);color:var(--panel);transform:rotate(45deg)}
+@media (max-width:860px){.menu-grid{grid-template-columns:minmax(0,1fr)}.cats{grid-template-columns:repeat(auto-fit,minmax(140px,1fr))}}
+
+/* Studio carousel */
+.studio{background:var(--mint);overflow:hidden}
+.drag-row{display:flex;gap:16px;margin-top:36px;cursor:grab;user-select:none;touch-action:pan-y}
+.drag-row.grabbing{cursor:grabbing}
+.drag-row figure{flex:none;width:clamp(260px,32vw,460px);aspect-ratio:4/3;border-radius:24px;overflow:hidden;transition:transform .5s var(--spring)}
+.drag-row figure img{width:100%;height:100%;object-fit:cover;pointer-events:none}
+.drag-row figure:nth-child(even){transform:rotate(1.5deg) translateY(14px)}
+.drag-row figure:nth-child(odd){transform:rotate(-1.5deg)}
+.drag-row figure:hover{transform:rotate(0) scale(1.03)}
+.drag-hint{display:inline-flex;align-items:center;gap:8px;font:700 14px/1 var(--display)}
+
+/* Booking */
+.book{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:clamp(12px,1.4vw,18px)}
+.book-art{position:relative;border-radius:var(--r);overflow:hidden;min-height:420px}
+.book-art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.book-art .sticker{left:24px;top:24px;padding:14px 18px;border-radius:20px;background:var(--butter);rotate:-6deg}
+.book-form{display:grid;gap:22px;background:var(--panel)}
+.days{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.days button{flex:none;display:grid;justify-items:center;gap:4px;width:66px;padding:12px 0;border-radius:20px;background:var(--milk);transition:background-color .3s,transform .3s var(--spring),color .3s}
+.days button small{font-size:12px;opacity:.7}
+.days button b{font:800 22px/1 var(--display)}
+.days button[aria-pressed="true"]{background:var(--plum);color:var(--panel);transform:translateY(-4px)}
+.slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(82px,1fr));gap:8px}
+.slots button{position:relative;overflow:hidden;height:44px;border-radius:14px;border:1.5px solid var(--line);font:700 14px/1 var(--display);transition:background-color .3s,border-color .3s,color .3s}
+.slots button:disabled{opacity:.35;text-decoration:line-through;cursor:not-allowed}
+.slots button[aria-pressed="true"]{background:var(--coral);border-color:var(--coral);color:#fff}
+.ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.6);transform:scale(0);animation:rip .6s ease-out forwards;pointer-events:none}
+@keyframes rip{to{transform:scale(4);opacity:0}}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fields input{width:100%;height:54px;padding:0 18px;border:1.5px solid var(--line);border-radius:16px;background:var(--milk);font-size:16px;transition:border-color .3s,background-color .3s}
+.fields input:focus{outline:none;border-color:var(--plum);background:#fff}
+.lab{font:700 14px/1 var(--display);margin-bottom:-10px}
+.summary{display:flex;flex-wrap:wrap;gap:6px}
+.summary span{padding:6px 12px;border-radius:99px;background:var(--blush);font-size:13.5px}
+.err{color:#C0352E;font-size:14.5px}
+.done{display:grid;gap:16px;justify-items:start;background:var(--panel);animation:popIn .6s var(--spring)}
+.done h3{font:800 clamp(30px,3vw,44px)/1.05 var(--display);letter-spacing:-.03em}
+@media (max-width:860px){.book{grid-template-columns:minmax(0,1fr)}.book-art{min-height:300px}}
+@media (max-width:480px){.fields{grid-template-columns:1fr}}
+
+/* Floating visit basket */
+.basket{position:fixed;left:50%;bottom:18px;z-index:60;display:flex;align-items:center;gap:14px;padding:8px 8px 8px 20px;border-radius:99px;background:var(--plum);color:var(--panel);box-shadow:0 20px 40px -16px rgba(58,20,48,.6);translate:-50% 140%;transition:translate .7s var(--spring)}
+.basket.show{translate:-50% 0}
+.basket .count{display:grid;place-items:center;min-width:28px;height:28px;padding-inline:6px;border-radius:99px;background:var(--coral);font:800 14px/1 var(--display)}
+.basket .count.bump{animation:bump .5s var(--spring)}
+@keyframes bump{40%{transform:scale(1.5)}}
+.basket p{font-size:14px;white-space:nowrap}
+.basket p b{font-family:var(--display)}
+.basket a{height:44px;padding-inline:18px;display:inline-flex;align-items:center;border-radius:99px;background:var(--butter);color:var(--plum);font:800 14px/1 var(--display)}
+.flyer{position:fixed;z-index:70;width:18px;height:18px;margin:-9px 0 0 -9px;border-radius:50%;background:var(--coral);pointer-events:none}
+@media (max-width:480px){.basket p .t{display:none}}
+
+/* Footer */
+.footer{background:var(--plum);color:var(--panel);margin-bottom:12px}
+.f-top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:32px}
+.f-big{font:800 clamp(56px,11vw,190px)/.85 var(--display);letter-spacing:-.06em}
+.f-big span{display:inline-block;transition:transform .5s var(--spring),color .3s}
+.f-big span:hover{transform:translateY(-12px) rotate(-6deg);color:var(--coral)}
+.f-cols{display:flex;flex-wrap:wrap;gap:48px}
+.f-cols h4{margin-bottom:12px;font:800 15px/1 var(--display);color:var(--butter)}
+.f-cols ul{display:grid;gap:6px;opacity:.8}
+.f-bottom{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;margin-top:48px;padding-top:20px;border-top:1px solid rgba(255,248,246,.15);font-size:13px;opacity:.65}
+
+/* Bubble cursor canvas + springy reveal */
+#bubbles{position:fixed;inset:0;z-index:80;pointer-events:none}
+[data-pop]{transition:transform .9s var(--spring),opacity .5s ease;transition-delay:calc(var(--d,0)*90ms)}
+[data-pop].pre{transform:scale(.88) translateY(40px);opacity:0}
+.rm *,.rm *::before,.rm *::after{animation:none!important;transition:none!important}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <clipPath id="blob1" clipPathUnits="objectBoundingBox"><path/></clipPath>
+    <clipPath id="blob2" clipPathUnits="objectBoundingBox"><path/></clipPath>
+    <clipPath id="blob3" clipPathUnits="objectBoundingBox"><path/></clipPath>
+  </defs>
+  <symbol id="spark" viewBox="0 0 24 24"><path d="M12 0c.8 6.4 5.6 11.2 12 12-6.4.8-11.2 5.6-12 12-.8-6.4-5.6-11.2-12-12C6.4 11.2 11.2 6.4 12 0z" fill="currentColor"/></symbol>
+  <symbol id="arr" viewBox="0 0 20 20"><path d="M4 10h12M11 5l5 5-5 5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
+<canvas id="bubbles" aria-hidden="true"></canvas>
+
+<header class="nav" id="nav">
+  <div class="wrap"><div class="nav-in">
+    <a class="logo" href="#top"><svg><use href="#spark"/></svg>beauty studio</a>
+    <nav class="links" aria-label="Primary"><a href="#services">Services</a><a href="#finder">Find a treatment</a><a href="#menu">Prices</a><a href="#studio">Studio</a></nav>
+    <a class="btn" href="#book">Book now</a>
+  </div></div>
+</header>
+
+<main>
+<section class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div class="hero-copy panel">
+      <span class="tagline"><b>★</b>Salon · Skin · Makeup · Spa</span>
+      <h1><span class="line"><span style="--i:0">Come in.</span></span><span class="line"><span style="--i:1">Leave</span></span><span class="line"><span style="--i:2"><em>glowing.</em></span></span></h1>
+      <p class="sub">Hair, skin, nails and bridal makeup by senior artists, using only professional-grade products. Walk-ins welcome, bookings preferred.</p>
+      <div class="cta"><a class="btn" href="#book">Book a slot <svg><use href="#arr"/></svg></a><a class="btn light" href="#finder">Help me choose</a></div>
+    </div>
+    <div class="hero-art" id="heroArt">
+      <img class="blob-img b1" src="img/hero.jpg" alt="A woman with glossy, freshly styled hair">
+      <img class="blob-img b2" src="img/hero-2.jpg" alt="Eyeliner being applied by a makeup artist">
+      <img class="blob-img b3" src="img/hero-3.jpg" alt="A portrait with glowing skin">
+      <span class="sticker s2">✨ New: Hydra facial</span>
+      <span class="sticker s1"><svg viewBox="0 0 120 120"><defs><path id="ring" d="M60,60 m-44,0 a44,44 0 1,1 88,0 a44,44 0 1,1 -88,0"/></defs><text style="font:800 12px var(--display);fill:var(--plum)" letter-spacing="2"><textPath href="#ring" textLength="272">FIRST VISIT · 20% OFF · FIRST VISIT · 20% OFF ·</textPath></text></svg><b style="font-size:26px">20%</b></span>
+    </div>
+  </div>
+</section>
+
+<div class="wave" aria-hidden="true">
+  <svg viewBox="0 0 1400 150" preserveAspectRatio="none"><path id="wavePath" d="M-200,90 C100,10 300,150 600,80 S1100,10 1600,90" fill="none"/>
+    <text><textPath id="waveText" href="#wavePath" startOffset="0">Blow-dry <tspan class="c">✦</tspan> Hydra facial <tspan class="c">✦</tspan> Gel nails <tspan class="c">✦</tspan> Keratin <tspan class="c">✦</tspan> Bridal glam <tspan class="c">✦</tspan> Hair spa <tspan class="c">✦</tspan> Blow-dry <tspan class="c">✦</tspan> Hydra facial <tspan class="c">✦</tspan> Gel nails <tspan class="c">✦</tspan> Keratin <tspan class="c">✦</tspan></textPath></text>
+  </svg>
+</div>
+
+<section id="services">
+  <div class="wrap gap">
+    <div class="panel" style="background:var(--panel);display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:24px" data-pop>
+      <h2 class="h2">Everything, <span class="hl">under one roof</span></h2>
+      <p class="sub">Six departments, each run by a specialist. Hover to open one.</p>
+    </div>
+    <div class="acc" id="acc" data-pop>
+      <article class="acc-item open"><img src="img/s-hair.jpg" alt="A stylist blow-drying a client's hair" loading="lazy"><span class="acc-no">01</span><div class="acc-label"><h3>Hair</h3><div class="acc-more"><p>Cuts, colour, keratin and hair spa by stylists trained on Indian hair textures.</p><ul><li>Haircut &amp; styling</li><li>Global colour</li><li>Keratin</li><li>Hair spa</li></ul></div></div></article>
+      <article class="acc-item"><img src="img/s-skin.jpg" alt="A client relaxing during a facial mask" loading="lazy"><span class="acc-no">02</span><div class="acc-label"><h3>Skin</h3><div class="acc-more"><p>Facials matched to your skin type after a quick consultation.</p><ul><li>Hydra facial</li><li>Clean-up</li><li>D-tan</li><li>Peels</li></ul></div></div></article>
+      <article class="acc-item"><img src="img/s-makeup.jpg" alt="A makeup artist doing a manicure" loading="lazy"><span class="acc-no">03</span><div class="acc-label"><h3>Makeup</h3><div class="acc-more"><p>Party, HD and airbrush looks that photograph beautifully and last all night.</p><ul><li>Party</li><li>HD</li><li>Airbrush</li><li>Saree draping</li></ul></div></div></article>
+      <article class="acc-item"><img src="img/s-nails.jpg" alt="Hands with lilac gel nails" loading="lazy"><span class="acc-no">04</span><div class="acc-label"><h3>Nails</h3><div class="acc-more"><p>Gel, extensions and nail art in a hygienic, single-use-tool setup.</p><ul><li>Gel polish</li><li>Extensions</li><li>Nail art</li><li>Mani-pedi</li></ul></div></div></article>
+      <article class="acc-item"><img src="img/s-spa.jpg" alt="A massage therapist pouring oil" loading="lazy"><span class="acc-no">05</span><div class="acc-label"><h3>Spa</h3><div class="acc-more"><p>Massages, body polishing and waxing in private, quiet rooms.</p><ul><li>Massage</li><li>Body polish</li><li>Waxing</li><li>Threading</li></ul></div></div></article>
+      <article class="acc-item"><img src="img/s-bridal.jpg" alt="A bride in a silk saree and gold jewellery" loading="lazy"><span class="acc-no">06</span><div class="acc-label"><h3>Bridal</h3><div class="acc-more"><p>Trials, pre-bridal packages and wedding-day glam, at the studio or your venue.</p><ul><li>Bridal makeup</li><li>Pre-bridal</li><li>Trials</li><li>On-location</li></ul></div></div></article>
+    </div>
+  </div>
+</section>
+
+<section id="finder" style="margin-top:clamp(12px,1.4vw,18px)">
+  <div class="wrap">
+    <div class="panel finder" data-pop>
+      <div>
+        <h2 class="h2">What's your <span class="hl">mood today?</span></h2>
+        <p class="sub" style="margin-top:18px">Tap what you need and we'll suggest the right treatment.</p>
+        <div class="concerns" id="concerns">
+          <button type="button" data-k="dull" aria-pressed="false">😴 Dull skin</button>
+          <button type="button" data-k="frizz" aria-pressed="false">🌀 Frizzy hair</button>
+          <button type="button" data-k="party" aria-pressed="false">🎉 Party this week</button>
+          <button type="button" data-k="nails" aria-pressed="false">💅 Sad nails</button>
+          <button type="button" data-k="relax" aria-pressed="false">🫠 Need to relax</button>
+          <button type="button" data-k="wedding" aria-pressed="false">💍 Wedding soon</button>
+        </div>
+      </div>
+      <div class="flip" id="flip">
+        <div class="flip-in">
+          <div class="face front"><span>👆</span><b>Pick a mood</b><p class="sub">Your treatment appears here.</p></div>
+          <div class="face back"><img id="recImg" src="img/q-clay.jpg" alt=""><div class="rec"><h3 id="recName"></h3><p id="recWhy"></p><div class="row"><b id="recPrice"></b><button class="add" type="button" id="recAdd">+ Add to visit</button></div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="menu" style="margin-top:clamp(12px,1.4vw,18px)">
+  <div class="wrap gap">
+    <div class="panel" style="background:var(--butter);display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:24px" data-pop>
+      <h2 class="h2">The price <span class="hl" style="color:var(--plum)">menu</span></h2>
+      <p class="sub" style="color:var(--plum)">Tap + to build your visit. Prices include GST.</p>
+    </div>
+    <div class="menu-grid">
+      <div class="cats" role="tablist" aria-label="Service categories" data-pop></div>
+      <div class="panel list" id="list" role="tabpanel" data-pop style="--d:1"></div>
+    </div>
+  </div>
+</section>
+
+<section id="studio" style="margin-top:clamp(12px,1.4vw,18px)">
+  <div class="wrap">
+    <div class="panel studio" data-pop>
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:24px">
+        <h2 class="h2">Inside the <span class="hl">studio</span></h2>
+        <p class="drag-hint">← Drag to look around →</p>
+      </div>
+      <div class="drag-row" id="dragRow">
+        <figure><img src="img/st-1.jpg" alt="Styling stations with mirrors and chairs" draggable="false"></figure>
+        <figure><img src="img/kit.jpg" alt="Makeup brushes and powders laid out" draggable="false"></figure>
+        <figure><img src="img/st-2.jpg" alt="A bright salon with arched mirrors" draggable="false"></figure>
+        <figure><img src="img/q-mani.jpg" alt="A manicure in progress" draggable="false"></figure>
+        <figure><img src="img/st-3.jpg" alt="A modern salon with round mirrors" draggable="false"></figure>
+        <figure><img src="img/lipstick.jpg" alt="A pink lipstick" draggable="false"></figure>
+        <figure><img src="img/st-4.jpg" alt="Pink salon chairs facing a mirror wall" draggable="false"></figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="book" style="margin-top:clamp(12px,1.4vw,18px)">
+  <div class="wrap book">
+    <div class="book-art" data-pop><img src="img/book.jpg" alt="A stylist blow-drying a client's hair" loading="lazy"><span class="sticker">Open daily<br>10 am – 9 pm</span></div>
+    <div data-pop style="--d:1">
+      <form class="panel book-form" id="bookForm" novalidate>
+        <h2 class="h2" style="font-size:clamp(36px,4vw,60px)">Grab a <span class="hl">slot</span></h2>
+        <p class="lab">Your visit</p>
+        <div class="summary" id="summary"><span>Nothing added yet. Pick from the menu, or just come and decide here.</span></div>
+        <p class="lab">Day</p>
+        <div class="days" id="days"></div>
+        <p class="lab">Time</p>
+        <div class="slots" id="slots"></div>
+        <div class="fields"><input id="bName" placeholder="Your name" autocomplete="name" aria-label="Your name"><input id="bPhone" type="tel" inputmode="tel" placeholder="Mobile number" aria-label="Mobile number"></div>
+        <p class="err" id="bErr" hidden></p>
+        <button class="btn" type="submit" style="justify-self:start">Confirm booking <svg><use href="#arr"/></svg></button>
+      </form>
+      <div class="panel done" id="bDone" hidden tabindex="-1">
+        <span class="tagline"><b>✓</b>Request ready</span>
+        <h3 id="bMsg"></h3>
+        <p class="sub">This is a demo form, so no booking was made. On the live site, you'd get a WhatsApp confirmation right away.</p>
+        <button class="btn light" type="button" id="bAgain">Book another</button>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="footer" style="margin-top:clamp(12px,1.4vw,18px)">
+  <div class="wrap"><div class="panel" style="padding-inline:0">
+    <div class="f-top">
+      <p class="f-big" id="fBig" aria-label="glow up">glow up.</p>
+      <div class="f-cols">
+        <div><h4>Visit</h4><ul><li>Open daily, 10 am – 9 pm</li><li><a href="#book">Book a slot</a></li></ul></div>
+        <div><h4>Explore</h4><ul><li><a href="#services">Services</a></li><li><a href="#menu">Prices</a></li><li><a href="#finder">Find a treatment</a></li></ul></div>
+      </div>
+    </div>
+    <div class="f-bottom"><span>© 2026 Beauty Studio · Concept website</span><span>Prices are for demonstration · Photography via Unsplash</span></div>
+  </div></div>
+</footer>
+
+<div class="basket" id="basket" aria-live="polite"><span class="count" id="bCount">0</span><p><b id="bTotal">₹0</b> <span class="t">· <span id="bTime">0 min</span></span></p><a href="#book">Book this</a></div>
+
+<script>
+(() => {
+  /* Set to true before launch to honour the visitor's "Reduce motion" setting. */
+  const RESPECT_REDUCED_MOTION = false;
+  const rm = RESPECT_REDUCED_MOTION && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (rm) document.documentElement.classList.add('rm');
+  const fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+  const inr = n => '₹' + n.toLocaleString('en-IN');
+  const mins = m => m >= 60 ? `${Math.floor(m / 60)}h${m % 60 ? ' ' + (m % 60) + 'm' : ''}` : m + ' min';
+
+  /* ---------- Data ---------- */
+  const MENU = {
+    Hair: [['Haircut & styling', 'Wash, cut and blow-dry', 799, 60], ['Global colour', 'Ammonia-free, root to tip', 3499, 120], ['Keratin smoothening', 'Frizz-free for up to 4 months', 5999, 180], ['Hair spa', 'Deep-conditioning ritual', 1499, 60]],
+    Skin: [['Hydra facial', 'Cleanse, extract, hydrate', 3999, 75], ['Classic clean-up', 'Quick refresh for busy days', 999, 40], ['D-tan pack', 'Face and neck', 699, 30], ['Chemical peel', 'For texture and dark spots', 2999, 45]],
+    Makeup: [['Party makeup', 'Includes hairstyling', 2499, 75], ['HD makeup', 'Camera-ready finish', 4999, 90], ['Bridal makeup', 'With trial, from', 24999, 180], ['Saree draping', 'Any style', 699, 20]],
+    Nails: [['Gel polish', 'Hands, lasts 3 weeks', 999, 45], ['Nail extensions', 'Gel or acrylic, full set', 2499, 90], ['Classic mani-pedi', 'With scrub and massage', 1499, 75], ['Nail art', 'Full set, any design', 799, 30]],
+    Spa: [['Full body massage', 'Swedish or deep tissue', 2999, 60], ['Body polishing', 'Scrub, wrap and glow', 3499, 90], ['Rica waxing', 'Full arms and legs', 899, 45], ['Eyebrow threading', '', 99, 10]]
+  };
+  const RECS = {
+    dull: ['q-facial', 'Hydra facial', 'Deep-cleans and floods skin with hydration. You walk out glowing, no downtime.', ['Skin', 0]],
+    frizz: ['q-curls', 'Keratin smoothening', 'Tames frizz and cuts styling time for up to four months.', ['Hair', 2]],
+    party: ['q-clay', 'Party makeup + clean-up', 'A quick clean-up first, then a long-wear look that lasts the night.', ['Makeup', 0]],
+    nails: ['q-mani', 'Gel polish', 'Chip-free, glossy colour that lasts three weeks.', ['Nails', 0]],
+    relax: ['q-stones', 'Full body massage', 'Sixty quiet minutes with warm oil and zero notifications.', ['Spa', 0]],
+    wedding: ['q-bride', 'Bridal makeup', 'Includes a trial session, so there are no surprises on the day.', ['Makeup', 2]]
+  };
+
+  /* ---------- Visit basket ---------- */
+  const visit = new Map();
+  const basket = $('#basket'), bCount = $('#bCount');
+  const renderBasket = () => {
+    let total = 0, time = 0;
+    visit.forEach(([, , p, t]) => { total += p; time += t; });
+    bCount.textContent = visit.size; $('#bTotal').textContent = inr(total); $('#bTime').textContent = mins(time);
+    basket.classList.toggle('show', visit.size > 0);
+    bCount.classList.remove('bump'); void bCount.offsetWidth; bCount.classList.add('bump');
+    $('#summary').innerHTML = visit.size ? [...visit.values()].map(i => `<span>${i[0]} · ${inr(i[2])}</span>`).join('') + `<span style="background:var(--butter)"><b>${inr(total)} · ${mins(time)}</b></span>` : '<span>Nothing added yet. Pick from the menu, or just come and decide here.</span>';
+    $$('.plus').forEach(b => { const on = visit.has(b.dataset.key); b.classList.toggle('on', on); b.setAttribute('aria-label', (on ? 'Remove ' : 'Add ') + b.dataset.name); });
+  };
+  const fly = from => {
+    if (rm) return;
+    const a = from.getBoundingClientRect(), b = basket.getBoundingClientRect();
+    const d = document.createElement('i'); d.className = 'flyer'; document.body.appendChild(d);
+    const x0 = a.left + a.width / 2, y0 = a.top + a.height / 2, x1 = b.left + 34, y1 = b.top + b.height / 2;
+    d.animate([{ transform: `translate(${x0}px,${y0}px) scale(1)` }, { transform: `translate(${(x0 + x1) / 2}px,${Math.min(y0, y1) - 160}px) scale(1.4)` }, { transform: `translate(${x1}px,${y1}px) scale(.4)` }], { duration: 800, easing: 'cubic-bezier(.5,0,.3,1)' }).onfinish = () => d.remove();
+  };
+  const toggleItem = (cat, idx, btn) => {
+    const key = cat + idx, item = MENU[cat][idx];
+    if (visit.has(key)) visit.delete(key); else { visit.set(key, item); basket.classList.add('show'); requestAnimationFrame(() => fly(btn)); }
+    setTimeout(renderBasket, visit.has(key) && !rm ? 650 : 0);
+  };
+
+  /* ---------- Price menu ---------- */
+  const cats = $('.cats'), list = $('#list');
+  const showCat = c => {
+    $$('.cat').forEach(b => b.setAttribute('aria-selected', b.dataset.c === c));
+    list.innerHTML = MENU[c].map(([n, d, p, t], i) => `<div class="item" style="--n:${i}"><div><h4>${n}</h4><p>${d ? d + ' · ' : ''}${mins(t)}</p></div><span class="p">${inr(p)}</span><button class="plus" type="button" data-key="${c + i}" data-name="${n}" data-c="${c}" data-i="${i}">+</button></div>`).join('');
+    renderBasket();
+  };
+  cats.innerHTML = Object.keys(MENU).map(c => `<button class="cat" role="tab" type="button" data-c="${c}">${c}<small>${MENU[c].length} services</small></button>`).join('');
+  cats.addEventListener('click', e => { const b = e.target.closest('.cat'); if (b) showCat(b.dataset.c); });
+  list.addEventListener('click', e => { const b = e.target.closest('.plus'); if (b) toggleItem(b.dataset.c, +b.dataset.i, b); });
+  showCat('Hair');
+
+  /* ---------- Concern finder ---------- */
+  const flip = $('#flip');
+  let curRec = null;
+  $('#concerns').addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    $$('#concerns button').forEach(x => x.setAttribute('aria-pressed', x === b));
+    const [img, name, why, [cat, idx]] = RECS[b.dataset.k];
+    curRec = [cat, idx];
+    const apply = () => {
+      $('#recImg').src = `img/${img}.jpg`; $('#recImg').alt = name; $('#recName').textContent = name; $('#recWhy').textContent = why;
+      $('#recPrice').textContent = 'from ' + inr(MENU[cat][idx][2]);
+      const added = visit.has(cat + idx); $('#recAdd').textContent = added ? '✓ Added' : '+ Add to visit'; $('#recAdd').classList.toggle('added', added);
+    };
+    if (flip.classList.contains('turn') && !rm) { flip.classList.remove('turn'); setTimeout(() => { apply(); flip.classList.add('turn'); }, 450); }
+    else { apply(); flip.classList.add('turn'); }
+  });
+  $('#recAdd').addEventListener('click', e => {
+    if (!curRec || visit.has(curRec.join(''))) return;
+    toggleItem(curRec[0], curRec[1], e.currentTarget);
+    e.currentTarget.textContent = '✓ Added'; e.currentTarget.classList.add('added');
+  });
+
+  /* ---------- Services accordion ---------- */
+  const items = $$('.acc-item');
+  const openItem = it => items.forEach(x => x.classList.toggle('open', x === it));
+  items.forEach(it => { it.addEventListener('pointerenter', () => fine && openItem(it)); it.addEventListener('click', () => openItem(it)); });
+
+  /* ---------- Draggable studio row with momentum ---------- */
+  const row = $('#dragRow');
+  let rx = 0, rv = 0, down = false, sx = 0, start = 0, maxX = 0;
+  const sizeRow = () => { maxX = Math.max(0, row.scrollWidth - row.parentElement.clientWidth + 0); };
+  sizeRow(); addEventListener('resize', sizeRow);
+  row.addEventListener('pointerdown', e => { down = true; sx = e.clientX; start = rx; rv = 0; row.classList.add('grabbing'); row.setPointerCapture(e.pointerId); });
+  row.addEventListener('pointermove', e => { if (!down) return; const nx = clamp(start + (e.clientX - sx), -maxX, 0); rv = nx - rx; rx = nx; });
+  const up = () => { down = false; row.classList.remove('grabbing'); };
+  row.addEventListener('pointerup', up); row.addEventListener('pointercancel', up);
+
+  /* ---------- Booking ---------- */
+  const ist = (() => { const d = new Date(); return new Date(d.getTime() + (d.getTimezoneOffset() + 330) * 60000); })();
+  const days = $('#days'), slots = $('#slots');
+  let day = 0, slot = null;
+  const dayDate = i => new Date(ist.getTime() + i * 864e5);
+  days.innerHTML = Array.from({ length: 7 }, (_, i) => { const d = dayDate(i); return `<button type="button" data-i="${i}" aria-pressed="${i === 0}"><small>${i === 0 ? 'Today' : d.toLocaleDateString('en-IN', { weekday: 'short' })}</small><b>${d.getDate()}</b></button>`; }).join('');
+  const renderSlots = () => {
+    const now = ist.getHours() * 60 + ist.getMinutes();
+    let html = '';
+    for (let m = 600; m <= 1230; m += 30) {
+      const t = `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`;
+      const busy = ((m * 7 + day * 13) % 5 === 0) || (day === 0 && m <= now + 30);
+      html += `<button type="button" data-t="${t}" ${busy ? 'disabled' : ''} aria-pressed="${slot === t}">${t}</button>`;
+    }
+    slots.innerHTML = html;
+  };
+  days.addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; day = +b.dataset.i; slot = null; $$('button', days).forEach(x => x.setAttribute('aria-pressed', x === b)); renderSlots(); });
+  slots.addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b || b.disabled) return;
+    slot = b.dataset.t; $$('button', slots).forEach(x => x.setAttribute('aria-pressed', x === b));
+    if (!rm) { const r = b.getBoundingClientRect(), s = document.createElement('i'); s.className = 'ripple'; const z = r.width; s.style.cssText = `width:${z}px;height:${z}px;left:${e.clientX - r.left - z / 2}px;top:${e.clientY - r.top - z / 2}px`; b.appendChild(s); setTimeout(() => s.remove(), 600); }
+  });
+  renderSlots();
+  const form = $('#bookForm'), done = $('#bDone'), err = $('#bErr');
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const name = $('#bName').value.trim(), phone = $('#bPhone').value.replace(/\D/g, '');
+    const probs = [];
+    if (!slot) probs.push('a time slot'); if (!name) probs.push('your name'); if (phone.length < 10) probs.push('a 10-digit mobile number');
+    if (probs.length) { err.textContent = 'Please choose ' + probs.join(', ').replace(/, ([^,]*)$/, ' and $1') + '.'; err.hidden = false; return; }
+    err.hidden = true;
+    const d = dayDate(day).toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long' });
+    $('#bMsg').textContent = `See you ${d} at ${slot}, ${name.split(/\s+/)[0]}!`;
+    form.hidden = true; done.hidden = false; done.focus({ preventScroll: true });
+  });
+  $('#bAgain').addEventListener('click', () => { done.hidden = true; form.hidden = false; });
+
+  /* ---------- Nav hide on scroll ---------- */
+  const nav = $('#nav'); let ly = scrollY;
+  addEventListener('scroll', () => { const y = scrollY; nav.classList.toggle('hide', y > 400 && y > ly); ly = y; }, { passive: true });
+
+  /* ---------- Springy reveal ---------- */
+  const io = rm ? null : new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.remove('pre'); e.target.classList.add('in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -10% 0px' });
+  if (io) $$('[data-pop]').forEach(el => { const r = el.getBoundingClientRect(); if (r.top > innerHeight * .9) { el.classList.add('pre'); io.observe(el); } else el.classList.add('in'); });
+  else $$('[data-pop]').forEach(el => el.classList.add('in'));
+
+  /* ---------- Footer letters ---------- */
+  $('#fBig').innerHTML = [...'glow up.'].map(c => c === ' ' ? ' ' : `<span>${c}</span>`).join('');
+
+  /* ---------- Living blobs (clip paths) ---------- */
+  const blobs = [
+    { p: $('#blob1 path'), n: 9, seed: 0, amp: .07 },
+    { p: $('#blob2 path'), n: 7, seed: 3, amp: .09 },
+    { p: $('#blob3 path'), n: 7, seed: 7, amp: .1 }
+  ];
+  const art = $('#heroArt');
+  let hmx = .5, hmy = .5, chx = .5, chy = .5;
+  if (fine) art.addEventListener('pointermove', e => { const r = art.getBoundingClientRect(); hmx = (e.clientX - r.left) / r.width; hmy = (e.clientY - r.top) / r.height; });
+  art.addEventListener('pointerleave', () => { hmx = hmy = .5; });
+  const blobPath = (b, t) => {
+    const pts = [];
+    for (let i = 0; i < b.n; i++) {
+      const a = i / b.n * Math.PI * 2;
+      let r = .355 + b.amp * Math.sin(t * .0009 * (1 + i % 3 * .3) + b.seed + i * 1.7) + b.amp * .5 * Math.sin(t * .0013 + i * 2.3 + b.seed);
+      const dx = Math.cos(a), dy = Math.sin(a);
+      r += ((chx - .5) * dx + (chy - .5) * dy) * .08;
+      pts.push([.5 + dx * r, .5 + dy * r]);
+    }
+    let d = '';
+    for (let i = 0; i < b.n; i++) {
+      const p0 = pts[(i - 1 + b.n) % b.n], p1 = pts[i], p2 = pts[(i + 1) % b.n], p3 = pts[(i + 2) % b.n];
+      if (!i) d += `M${p1[0].toFixed(4)},${p1[1].toFixed(4)}`;
+      const c1 = [p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6], c2 = [p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6];
+      d += `C${c1[0].toFixed(4)},${c1[1].toFixed(4)} ${c2[0].toFixed(4)},${c2[1].toFixed(4)} ${p2[0].toFixed(4)},${p2[1].toFixed(4)}`;
+    }
+    b.p.setAttribute('d', d + 'Z');
+  };
+  blobs.forEach(b => blobPath(b, 0));
+
+  /* ---------- Bubble cursor trail ---------- */
+  const bc = $('#bubbles'), bx = bc.getContext('2d');
+  let BW = 0, BH = 0;
+  const bsize = () => { const d = Math.min(2, devicePixelRatio || 1); BW = innerWidth; BH = innerHeight; bc.width = BW * d; bc.height = BH * d; bx.setTransform(d, 0, 0, d, 0, 0); };
+  bsize(); addEventListener('resize', bsize);
+  const bubbles = []; let lx = 0, lyb = 0;
+  if (fine && !rm) addEventListener('pointermove', e => {
+    if (Math.hypot(e.clientX - lx, e.clientY - lyb) < 26) return;
+    lx = e.clientX; lyb = e.clientY;
+    bubbles.push({ x: lx, y: lyb, r: 4 + Math.random() * 10, life: 1, vx: (Math.random() - .5) * .6, ph: Math.random() * 6 });
+    if (bubbles.length > 40) bubbles.shift();
+  }, { passive: true });
+  const drawBubbles = () => {
+    bx.clearRect(0, 0, BW, BH);
+    for (let i = bubbles.length - 1; i >= 0; i--) {
+      const b = bubbles[i];
+      b.life -= .012; b.y -= .8; b.x += b.vx + Math.sin(b.ph += .08) * .4;
+      if (b.life <= 0) { bubbles.splice(i, 1); continue; }
+      const popping = b.life < .12, r = popping ? b.r * (1 + (.12 - b.life) * 8) : b.r;
+      bx.globalAlpha = popping ? b.life * 6 : Math.min(1, b.life * 1.4);
+      bx.lineWidth = 1.2;
+      bx.strokeStyle = 'rgba(255,94,91,.55)';
+      bx.fillStyle = 'rgba(255,229,154,.18)';
+      bx.beginPath(); bx.arc(b.x, b.y, r, 0, Math.PI * 2); bx.fill(); bx.stroke();
+      bx.fillStyle = 'rgba(255,255,255,.85)';
+      bx.beginPath(); bx.arc(b.x - r * .35, b.y - r * .35, r * .22, 0, Math.PI * 2); bx.fill();
+    }
+    bx.globalAlpha = 1;
+  };
+
+  /* ---------- Wave text: scrolls continuously, speeds up with page scroll ---------- */
+  const waveText = $('#waveText'), waveEl = waveText.parentNode;
+  const WAVE = ['Blow-dry', 'Hydra facial', 'Gel nails', 'Keratin', 'Bridal glam', 'Hair spa', 'Nail art', 'Body polish'];
+  const waveSet = WAVE.map(w => `${w} <tspan class="c">✦</tspan> `).join('');
+  waveText.innerHTML = waveSet;
+  let waveLen = waveEl.getComputedTextLength() || 1600, waveOff = 0, lastWaveY = scrollY;
+  waveText.innerHTML = waveSet.repeat(Math.max(3, Math.ceil(3400 / waveLen)));
+
+  /* ---------- Frame loop ---------- */
+  const loop = t => {
+    if (!rm) {
+      chx += (hmx - chx) * .08; chy += (hmy - chy) * .08;
+      blobs.forEach(b => blobPath(b, t));
+      const wv = scrollY - lastWaveY; lastWaveY = scrollY;
+      waveOff = (waveOff + 1.1 + Math.min(40, Math.abs(wv) * .6)) % waveLen;
+      waveText.setAttribute('startOffset', (-waveOff).toFixed(1));
+      if (!down && Math.abs(rv) > .1) { rx = clamp(rx + rv, -maxX, 0); rv *= .94; }
+      row.style.transform = `translateX(${rx.toFixed(1)}px)`;
+      drawBubbles();
+    }
+    requestAnimationFrame(loop);
+  };
+  requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>
